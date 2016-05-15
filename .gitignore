@@ -1,0 +1,7 @@
+node_modules/
+typings/
+src/public/
+.vscode/
+
+jsconfig.json
+typings.json
