@@ -16,7 +16,8 @@
     "react-dom": "^15.0.2"
   },
   "scripts": {
-    "start": "node ./src/server.js"
+    "dev": "node ./src/server.js",
+    "build" : "webpack -p"
   },
   "author": "scloudyy",
   "license": "MIT"
