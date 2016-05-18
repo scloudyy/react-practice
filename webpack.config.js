@@ -23,9 +23,6 @@ const common = {
 	},
 	module: {
 		loaders: [{
-			test: /\.css$/,
-			loader: 'style!css'
-		}, {
 			test: /\.jsx?$/,
 			loaders: ['jsx?harmony'],
 			exclude: /node_modules/
@@ -45,12 +42,16 @@ switch (process.env.npm_lifecycle_event) {
 				// Customize host/port here if needed
 				host: process.env.HOST,
 				port: 8080
-			})
+			}),
+			parts.setupCSS(path.join(PATHS.app, 'style'))
 		);
 		break;
 	case 'build':
 	default:
-		config = merge(common, {});
+		config = merge(
+			common,
+			parts.setupCSS(path.join(PATHS.app, 'style'))
+		);
 		break;
 }
 
