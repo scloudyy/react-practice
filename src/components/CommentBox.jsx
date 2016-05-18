@@ -1,12 +1,43 @@
 const React = require('react');
 const marked = require('marked');
+const $ = require('jquery');
+
+let t = React.createClass({
+	render: function() {
+		return (
+			<div>
+				<p>hello</p>
+			</div>
+		);
+	}
+});
 
 let CommentBox = React.createClass({
+	loadCommentFromServer: function() {
+		$.ajax({
+			url: this.props.url,
+			dataType: 'json',
+			cache: false,
+			success: function(data) {
+				this.setState({data: data});
+			}.bind(this),
+			error: function(xhr, status, err) {
+				console.log(this.props.url, status, err.toString());
+			}.bind(this)
+		});
+	},
+	getInitialState: function() {
+		return {data: []};
+	},
+	componentDidMount: function() {
+		this.loadCommentFromServer();
+		setInterval(this.loadCommentFromServer, this.props.pollInterval);
+	},
 	render: function() {
 		return (
       <div className="commentBox">
 				<h1>commentList</h1>
-				<CommentList/>
+				<CommentList data={this.props.data} />
 				<CommentForm/>
 			</div>
     );
@@ -15,10 +46,16 @@ let CommentBox = React.createClass({
 
 let CommentList = React.createClass({
 	render: function() {
+		let commentNodes = this.props.data.map((comment) => {
+			return (
+				<Comment author={comment.author} key={comment.id}>
+					{comment.text}
+				</Comment>
+			);
+		});
 		return (
 			<div className="commentList">
-				<Comment author="Peter">This is one comment</Comment><br/>
-				<Comment author="Tom">This is *anothor* comment</Comment><br/>
+				{commentNodes}
 			</div>
 		);
 	}
@@ -52,4 +89,5 @@ let Comment = React.createClass({
 	}
 });
 
-module.exports = CommentBox;
+//module.exports = CommentBox;
+module.exports = t;
