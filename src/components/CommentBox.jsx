@@ -2,16 +2,6 @@ const React = require('react');
 const marked = require('marked');
 const $ = require('jquery');
 
-let t = React.createClass({
-	render: function() {
-		return (
-			<div>
-				<p>hello</p>
-			</div>
-		);
-	}
-});
-
 let CommentBox = React.createClass({
 	loadCommentFromServer: function() {
 		$.ajax({
@@ -22,7 +12,21 @@ let CommentBox = React.createClass({
 				this.setState({data: data});
 			}.bind(this),
 			error: function(xhr, status, err) {
-				console.log(this.props.url, status, err.toString());
+				console.error(this.props.url, status, err.toString());
+			}.bind(this)
+		});
+	},
+	handleCommetnSubmit: function(comment) {
+		$.ajax({
+			url: this.props.url,
+			dataType: 'json',
+			type: 'POST',
+			data: comment,
+			success: function(data) {
+				this.setState({data: data});
+			}.bind(this),
+			error: function(xhr, status, err){
+				console.error(this.props.url, status, err.toString());
 			}.bind(this)
 		});
 	},
@@ -36,9 +40,9 @@ let CommentBox = React.createClass({
 	render: function() {
 		return (
       <div className="commentBox">
-				<h1>commentList</h1>
-				<CommentList data={this.props.data} />
-				<CommentForm/>
+				<h1>Comment</h1>
+				<CommentList data={this.state.data} />
+				<CommentForm onCommentSubmit={this.handleCommetnSubmit}/>
 			</div>
     );
 	}
@@ -62,11 +66,42 @@ let CommentList = React.createClass({
 });
 
 let CommentForm = React.createClass({
+	getInitialState: function() {
+		return {author: '', text: ''};
+	},
+	handleAuthorChange: function(e) {
+		this.setState({author: e.target.value});
+	},
+	handleTextChange: function(e) {
+		this.setState({text: e.target.value});
+	},
+	handleSubmit: function(e) {
+		e.preventDefault();
+		let author = this.state.author.trim();
+		let text = this.state.text.trim();
+		if (!text|| ! author) {
+			return;
+		}
+		this.props.onCommentSubmit({author: author, text: text});
+		this.setState({author: '', text: ''});
+	},
 	render: function() {
 		return (
-			<div className="commentForm">
-				commentForm
-			</div>
+			<form className="commentForm" onSubmit={this.handleSubmit}>
+				<input
+					type="text"
+					placeholder="Your ame"
+					value={this.state.author}
+					onChange={this.handleAuthorChange}
+				/>
+				<input
+					type="text"
+					placeholder="Say something"
+					value={this.state.text}
+					onChange={this.handleTextChange}
+				/>
+				<input type="submit" value="Post"/>
+			</form>
 		);
 	}
 });
@@ -89,5 +124,4 @@ let Comment = React.createClass({
 	}
 });
 
-//module.exports = CommentBox;
-module.exports = t;
+module.exports = CommentBox;

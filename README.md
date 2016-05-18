@@ -3,7 +3,6 @@
 ## install
 
 ``` shell
-npm install -g webpack
 npm install
 ```
 
@@ -12,7 +11,8 @@ npm install
 build local
 
 ```shell
-npm run build
+npm bulid
+node server.js
 ```
 
 see index.html with browser
@@ -20,7 +20,8 @@ see index.html with browser
 development
 
 ```shell
-npm run dev
+npm start
+node server.js
 ```
 
 see localhost:3000/index.html
