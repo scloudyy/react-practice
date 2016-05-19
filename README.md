@@ -12,7 +12,7 @@ build local
 
 ```shell
 npm bulid
-node server.js
+npm run server
 ```
 
 see index.html with browser
@@ -21,7 +21,7 @@ development
 
 ```shell
 npm start
-node server.js
+npm run server
 ```
 
 see localhost:3000/index.html

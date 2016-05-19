@@ -22,7 +22,8 @@
   },
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "webpack"
+    "build": "webpack",
+    "server": "node server/server.js"
   },
   "author": "scloudyy",
   "license": "MIT"

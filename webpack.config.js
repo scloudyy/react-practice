@@ -43,7 +43,8 @@ switch (process.env.npm_lifecycle_event) {
 				host: process.env.HOST,
 				port: 8080
 			}),
-			parts.setupCSS(path.join(PATHS.app, 'style'))
+			parts.setupCSS(path.join(PATHS.app, 'style')),
+			{devtool: 'source-map'}
 		);
 		break;
 	case 'build':

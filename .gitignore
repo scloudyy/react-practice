@@ -6,3 +6,4 @@ src/public/
 jsconfig.json
 typings.json
 *.log
+comments.json
