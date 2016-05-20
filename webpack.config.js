@@ -24,7 +24,7 @@ const common = {
 	module: {
 		loaders: [{
 			test: /\.jsx?$/,
-			loaders: ['jsx?harmony'],
+			loaders: ['react-hot','jsx?harmony'],
 			exclude: /node_modules/
 		}]
 	},
@@ -43,15 +43,15 @@ switch (process.env.npm_lifecycle_event) {
 				host: process.env.HOST,
 				port: 8080
 			}),
-			parts.setupCSS(path.join(PATHS.app, 'style')),
-			{devtool: 'source-map'}
+			parts.setupCSS(path.join(PATHS.app, 'style'))
 		);
 		break;
 	case 'build':
 	default:
 		config = merge(
 			common,
-			parts.setupCSS(path.join(PATHS.app, 'style'))
+			parts.setupCSS(path.join(PATHS.app, 'style')),
+			{devtool: 'source-map'}
 		);
 		break;
 }
