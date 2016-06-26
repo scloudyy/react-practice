@@ -19,22 +19,15 @@ const common = {
 		filename: 'bundle.js'
 	},
 	resolve: {
-		extensions: ['', '.js', '.jsx']
+		extensions: ['', '.js']
 	},
-	module: {
-		loaders: [{
-			test: /\.jsx?$/,
-			loaders: ['react-hot','jsx?harmony'],
-			exclude: /node_modules/
-		}]
-	},
+	module: {},
 	plugins: []
 };
 
 var config;
 
 switch (process.env.npm_lifecycle_event) {
-
 	case 'start':
 		config = merge(
 			common,
@@ -43,6 +36,7 @@ switch (process.env.npm_lifecycle_event) {
 				host: process.env.HOST,
 				port: 8080
 			}),
+			parts.setupJsx(),
 			parts.setupCSS(path.join(PATHS.app, 'style'))
 		);
 		break;
@@ -50,8 +44,10 @@ switch (process.env.npm_lifecycle_event) {
 	default:
 		config = merge(
 			common,
-			parts.setupCSS(path.join(PATHS.app, 'style')),
-			{devtool: 'source-map'}
+			parts.setupJsx(),
+			parts.setupCSS(path.join(PATHS.app, 'style')), {
+				devtool: 'source-map'
+			}
 		);
 		break;
 }

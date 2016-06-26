@@ -25,7 +25,7 @@ let CommentBox = React.createClass({
 			success: function(data) {
 				this.setState({data: data});
 			}.bind(this),
-			error: function(xhr, status, err){
+			error: function(xhr, status, err) {
 				console.error(this.props.url, status, err.toString());
 			}.bind(this)
 		});
@@ -39,12 +39,13 @@ let CommentBox = React.createClass({
 	},
 	render: function() {
 		return (
-      <div className="commentBox">
-				<h1>Comment</h1>
-				<CommentList data={this.state.data} />
+			<div className="commentBox">
+				<h1>Comments</h1>
+				<LikeButton/>
+				<CommentList data={this.state.data}/>
 				<CommentForm onCommentSubmit={this.handleCommetnSubmit}/>
 			</div>
-    );
+		);
 	}
 });
 
@@ -79,7 +80,7 @@ let CommentForm = React.createClass({
 		e.preventDefault();
 		let author = this.state.author.trim();
 		let text = this.state.text.trim();
-		if (!text|| ! author) {
+		if (!text || !author) {
 			return;
 		}
 		this.props.onCommentSubmit({author: author, text: text});
@@ -88,18 +89,8 @@ let CommentForm = React.createClass({
 	render: function() {
 		return (
 			<form className="commentForm" onSubmit={this.handleSubmit}>
-				<input
-					type="text"
-					placeholder="Your ame"
-					value={this.state.author}
-					onChange={this.handleAuthorChange}
-				/>
-				<input
-					type="text"
-					placeholder="Say something"
-					value={this.state.text}
-					onChange={this.handleTextChange}
-				/>
+				<input type="text" placeholder="Your ame" value={this.state.author} onChange={this.handleAuthorChange}/>
+				<input type="text" placeholder="Say something" value={this.state.text} onChange={this.handleTextChange}/>
 				<input type="submit" value="Post"/>
 			</form>
 		);
@@ -109,18 +100,35 @@ let CommentForm = React.createClass({
 let Comment = React.createClass({
 	rawMarkup: function() {
 		let rawMarkup = marked(this.props.children.toString(), {sanitize: true});
-		return { __html: rawMarkup };
+		return {__html: rawMarkup};
 	},
 
-	render: function () {
+	render: function() {
 		return (
 			<div className="comment">
 				<h2 className="commentAuthor">
 					{this.props.author}
 				</h2>
-				<span dangerouslySetInnerHTML={this.rawMarkup()} />
+				<span dangerouslySetInnerHTML={this.rawMarkup()}/>
 			</div>
 		);
+	}
+});
+
+var LikeButton = React.createClass({
+	getInitialState: function() {
+		return {liked: false};
+	},
+	handleClick: function(event) {
+		this.setState({
+			liked: !this.state.liked
+		});
+	},
+	render: function() {
+		var text = this.state.liked
+			? 'like'
+			: 'haven\'t liked';
+		return (<input type="button" onClick={this.handleClick} value={text}/>);
 	}
 });
 
