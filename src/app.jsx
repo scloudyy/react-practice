@@ -1,11 +1,11 @@
-const CommentBox = require('./components/CommentBox');
 const React = require('react');
 const ReactDom = require('react-dom');
 
-ReactDom.render(
-	<CommentBox url='http://localhost:3000/api/comments' pollInterval={2000}/>, document.getElementById('content2'));
+const CommentBox = require('./components/CommentBox');
 
-let FilterableProductTable = require('./components/FilterableProductTable');
+const FilterableProductTable = require('./components/FilterableProductTable');
+
+const HelloWorld = require('./components/Test');
 
 var PRODUCTS = [
 	{
@@ -35,11 +35,21 @@ var PRODUCTS = [
 		name: 'iPhone 5'
 	}, {
 		category: 'Electronics',
-		price: '$199.99',
+		price: '$199.9',
 		stocked: true,
 		name: 'Nexus 7'
 	}
 ];
 
 ReactDom.render(
-	<FilterableProductTable products={PRODUCTS}/>, document.getElementById('content'));
+	<FilterableProductTable products={PRODUCTS}/>, document.getElementById('content1'));
+
+ReactDom.render(
+	<CommentBox url='http://localhost:3000/api/comments' pollInterval={2000}/>, document.getElementById('content2'));
+
+setInterval(function() {
+	ReactDom.render(
+		<HelloWorld date={new Date()} checked={true} atrr={1} />,
+		document.getElementById('content3')
+	);
+}, 500);
